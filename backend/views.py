@@ -1,10 +1,11 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .serializers import RegisterSerializer,VeFieldTypeSerializer
-from .models import VeFieldType
+from .models import VeFieldType, VeDynamicForm
+from .serializers import VeDynamicFormSerializer
 
 # Registration View
 class RegisterAPIView(generics.CreateAPIView):
@@ -29,7 +30,21 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     permission_classes = [AllowAny]
 
+
+# API views for Form Creation
+
 class VeFieldTypeListApiView(generics.ListAPIView):
     queryset = VeFieldType.objects.all().order_by('id')
     serializer_class = VeFieldTypeSerializer
     permission_classes = [AllowAny]
+
+
+class VeDynamicFormCreateListAPIView(generics.ListCreateAPIView):
+    queryset = VeDynamicForm.objects.all().order_by('id')
+    serializer_class = VeDynamicFormSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class VeDynamicFormRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = VeDynamicForm.objects.all()
+    serializer_class = VeDynamicFormSerializer
+    permission_classes = [permissions.IsAuthenticated]
