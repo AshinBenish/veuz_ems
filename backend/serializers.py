@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from .models import VeFieldType
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
@@ -20,3 +21,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+class VeFieldTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VeFieldType
+        fields = ['id', 'name', 'display_name', 'html_input_type', 'description']
