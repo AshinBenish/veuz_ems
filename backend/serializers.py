@@ -41,7 +41,7 @@ class VeDynamicFormSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VeDynamicForm
-        fields = ['id', 'name', 'description', 'fields']
+        fields = ['id', 'name', 'description', 'fields','created_at']
 
     def create(self, validated_data):
         fields_data = validated_data.pop('fields')

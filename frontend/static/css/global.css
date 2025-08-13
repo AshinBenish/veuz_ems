@@ -1,0 +1,12 @@
+ .border,
+ .border-b {
+   border-color: #d1d5db;
+ }
+
+ .text-primary-foreground {
+   color: #ffffff;
+ }
+
+ button{
+  cursor: pointer;
+ }

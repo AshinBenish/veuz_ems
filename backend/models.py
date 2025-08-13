@@ -41,6 +41,9 @@ class VeDynamicFormField(BaseModel):
     required = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return f"{self.label} - {self.field_type}"
+
     class Meta:
         db_table = 've_dynamic_form_field'
 
