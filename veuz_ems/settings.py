@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -127,7 +129,43 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'My API',
+    'DESCRIPTION': 'API for my project',
+    'VERSION': '1.0.0',
+    # if you only want UIs, not the raw schema at the same URL
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    # lock down who can view the docs (optional)
+    'SERVE_AUTHENTICATION': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+
+    # define security schemes for the “Authorize” button
+    'COMPONENTS': {
+        'securitySchemes': {
+            'BasicAuth': {'type': 'http', 'scheme': 'basic'},
+            'TokenAuth': {'type': 'apiKey', 'in': 'header', 'name': 'Authorization'},
+            'BearerAuth': {'type': 'http', 'scheme': 'bearer', 'bearerFormat': 'JWT'},
+        }
+    },
+    # set the default applied scheme(s)
+    'SECURITY': [{'BearerAuth': []}],  # or [{'TokenAuth': []}], etc.
+
+    # nice to have
+    'COMPONENT_SPLIT_REQUEST': True,   # better request/response separation
+    # 'SCHEMA_PATH_PREFIX': r'/api',   # if you only want to include /api routes
 }

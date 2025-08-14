@@ -89,7 +89,9 @@ app.controller('employeeFormListController', ['$scope', 'ApiService', 'ToastServ
         ApiService.createEmployee(payload).then(function (response) {
             ToastService.show('success', 'Employee created successfully.');
             $scope.resetForm();
-            console.log(response.data);
+            $timeout(function () {
+                window.location = '/employee/search/';
+            }, 1000);
         }).catch(function (error) {
             ToastService.show('error', 'Something went wrong.');
             console.log(error);

@@ -94,6 +94,15 @@ class VeDynamicFormSerializer(serializers.ModelSerializer):
         return form
 
     def update(self, instance, validated_data):
+        # Check if any field has employee data
+        has_values = VeEmployeeFieldValue.objects.filter(
+            form_field__form=instance
+        ).exists()
+        if has_values:
+            raise serializers.ValidationError(
+                "Cannot update this form because some fields already have employee data."
+            )
+        
         fields_data = validated_data.pop('fields', None)
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)

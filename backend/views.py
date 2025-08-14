@@ -7,8 +7,19 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.exceptions import ValidationError
+from rest_framework import viewsets, mixins
+from rest_framework.decorators import action
+
+from drf_spectacular.utils import (
+    extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample,
+    OpenApiResponse, inline_serializer
+)
+from drf_spectacular.types import OpenApiTypes
+
+from rest_framework import serializers
 from .serializers import RegisterSerializer,VeFieldTypeSerializer
-from .models import VeFieldType, VeDynamicForm, VeDynamicFormField, VeEmployee
+from .models import VeFieldType, VeDynamicForm, VeDynamicFormField, VeEmployee,VeEmployeeFieldValue
 from .serializers import (
     VeDynamicFormSerializer, 
     VeEmployeeSubmitSerializer, 
@@ -90,6 +101,17 @@ class VeDynamicFormRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAP
     serializer_class = VeDynamicFormSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        has_values = VeEmployeeFieldValue.objects.filter(
+            form_field__form=instance
+        ).exists()
+        if has_values:
+            raise ValidationError(
+                "Cannot delete this form because some fields already have employee data."
+            )
+        return super().destroy(request, *args, **kwargs)
+
 # API for Employee CRUD
 
 class EmployeeSubmitAPIView(generics.CreateAPIView):
@@ -160,4 +182,43 @@ class EmployeeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         )
     )
     serializer_class = VeEmployeeSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+
+class WidgetSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField()
+    status = serializers.ChoiceField(choices=['draft', 'active'])
+
+@extend_schema_view(
+    list=extend_schema(
+        summary="List widgets",
+        parameters=[
+            OpenApiParameter(name='status', type=OpenApiTypes.STR, location=OpenApiParameter.QUERY,
+                             description="Filter by status (draft|active)"),
+            OpenApiParameter(name='page', type=OpenApiTypes.INT, location=OpenApiParameter.QUERY),
+        ],
+        responses=OpenApiResponse(response=200, description="List of widgets"),
+        examples=[
+            OpenApiExample(
+                'List example',
+                value=[{'id': 1, 'name': 'Foo', 'status': 'active'}],
+            ),
+        ],
+    ),
+    create=extend_schema(summary="Create a widget", responses={201: WidgetSerializer}),
+)
+class WidgetViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+    serializer_class = WidgetSerializer
+    queryset = []  # replace with your queryset
+
+    @action(detail=True, methods=['post'])
+    @extend_schema(
+        summary="Activate a widget",
+        request=inline_serializer(
+            name="ActivateWidgetRequest",
+            fields={'force': serializers.BooleanField(required=False)}
+        ),
+        responses={200: OpenApiResponse(description="Activated")},
+    )
+    def activate(self, request, pk=None):
+        return Response({"ok": True})

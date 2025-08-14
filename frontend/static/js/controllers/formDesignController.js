@@ -2,11 +2,13 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
     $scope.getFieldTyeps = function () {
         ApiService.getFieldTypes().then(function (response) {
             $scope.fieldTypes = response.data;
-            console.log($scope.fieldTypes);
         }).catch(function (error) {
             console.log(error);
         }).finally(function () {
-
+            // isFormEdit and formId variables are declared in html file
+            if ($scope.isFormEdit) {
+                $scope.fetchFormData();
+            }
         })
     }
 
@@ -15,7 +17,7 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
         // { label: 'Email Address', placeholder: 'Enter Values', type: '3', type_name: 'email', required: true, order: 2 },
         // { label: 'Phone Number', placeholder: 'Enter Values', type: '6', type_name: 'phone', required: false, order: 3 }
     ];
-   
+
     $scope.removeField = function (index) {
         $scope.fields.splice(index, 1);
         updateOrder();
@@ -85,14 +87,19 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
             fields: $scope.fields
         }
 
-        if($scope.isFormEdit){
+        if ($scope.isFormEdit) {
             $scope.updateForm(payload);
             return;
         }
 
         ApiService.createForm(payload).then(function (response) {
-            console.log(response);
             ToastService.show('success', 'Form created successfully.');
+            $scope.form_name = null;
+            $scope.form_description = null;
+            $scope.fields = [];
+            $timeout(function () {
+                window.location = '/forms/list';
+            }, 1000);
         }).catch(function (error) {
             console.log(error);
             ToastService.show('error', 'Something went wrong.');
@@ -102,11 +109,16 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
 
     $scope.updateForm = function (payload) {
         ApiService.updateForm($scope.formId, payload).then(function (response) {
-            console.log(response);
             ToastService.show('success', 'Form updated successfully.');
+            $timeout(function () {
+                window.location = '/forms/list';
+            }, 1000);
         }).catch(function (error) {
-            console.log(error);
-            ToastService.show('error', 'Something went wrong.');
+            if (error.data && Array.isArray(error.data) && typeof error.data[0] === 'string') {
+                ToastService.show('error', error.data[0]);
+            } else {
+                ToastService.show('error', 'Something went wrong.');
+            }
         }).finally(function () {
         })
     }
@@ -121,7 +133,6 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
 
     $scope.fetchFormData = function () {
         ApiService.getFormData($scope.formId).then(function (response) {
-            console.log(response);
             $scope.formData = response.data;
             if (!$scope.formData || !$scope.formData.fields.length) {
                 ToastService.show('error', 'No data found.');
@@ -146,11 +157,4 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
     $scope.formId = formId;
 
     $scope.getFieldTyeps();
-    console.log(isFormEdit)
-    console.log(formId)
-    // isFormEdit and formId variables are declared in html file
-    if ($scope.isFormEdit) {
-        $scope.fetchFormData();
-    }
-
 }]);
