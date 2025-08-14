@@ -1,1 +1,87 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+{% block top_script %}
+{% endblock top_script %}
+{% block content %}
+{% verbatim %}
+<div class="p-6" ng-app="emsApp" ng-controller="dashboardController">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{userName}}!</h1>
+        <p class="text-gray-600 mt-2">Here's what's happening with your employee management system.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="rounded-lg text-card-foreground border-0 shadow-sm bg-white">
+            <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="tracking-tight text-lg font-semibold text-gray-900">Quick Actions</h3>
+                <p class="text-sm text-muted-foreground">Common tasks you can perform</p>
+            </div>
+            <div class="p-6 pt-0 space-y-3"><a href="/forms/create/"
+                    class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200 group"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-file-text w-5 h-5 text-green-600 mr-3">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                        <path d="M10 9H8"></path>
+                        <path d="M16 13H8"></path>
+                        <path d="M16 17H8"></path>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-900 group-hover:text-green-900">Create New Form</p>
+                        <p class="text-sm text-gray-600">Design a custom employee form</p>
+                    </div>
+                </a><a href="/employee/create"
+                    class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200 group"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-users w-5 h-5 text-blue-600 mr-3">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-900 group-hover:text-blue-900">Add Employee</p>
+                        <p class="text-sm text-gray-600">Create a new employee record</p>
+                    </div>
+                </a></div>
+        </div>
+        <div class="rounded-lg text-card-foreground border-0 shadow-sm bg-white">
+            <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="tracking-tight text-lg font-semibold text-gray-900">How to Get Started</h3>
+                <p class="text-sm text-muted-foreground">Follow these simple steps</p>
+            </div>
+            <div class="p-6 pt-0 space-y-3">
+                <div class="flex items-center space-x-3 p-2">
+                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Dynamic form creation</p>
+                        <p class="text-xs text-gray-600">Design forms that suit your needs.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 p-2">
+                    <div class="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Choose your input</p>
+                        <p class="text-xs text-gray-600">Select from a variety of field types.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 p-2">
+                    <div class="w-2 h-2 bg-purple-600 rounded-full"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Create employee with your customized form</p>
+                        <p class="text-xs text-gray-600">Use your form to add new employees easily.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock content %}
+{% block bottom_script_cdn %}
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/services/apiService.js' %}"></script>
+<script src="{% static 'js/services/toastService.js' %}"></script>
+<script src="{% static 'js/controllers/dashboardController.js' %}"></script>
+{% endblock bottom_script_cdn %}

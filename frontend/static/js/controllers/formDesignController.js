@@ -15,8 +15,7 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
         // { label: 'Email Address', placeholder: 'Enter Values', type: '3', type_name: 'email', required: true, order: 2 },
         // { label: 'Phone Number', placeholder: 'Enter Values', type: '6', type_name: 'phone', required: false, order: 3 }
     ];
-    var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU1MTM3NzczLCJpYXQiOjE3NTUwOTQ1NzMsImp0aSI6ImZmNmM0OTQ4ZjZhYjRlNzhiNWQ2M2U1NmJmYzEzODhhIiwidXNlcl9pZCI6IjEifQ.r4LIXF2O9LYRQ_p2ULXGTlUsTzDT3SmBxUDW7PsI_f8"
-
+   
     $scope.removeField = function (index) {
         $scope.fields.splice(index, 1);
         updateOrder();
@@ -91,7 +90,7 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
             return;
         }
 
-        ApiService.createForm(payload, access_token).then(function (response) {
+        ApiService.createForm(payload).then(function (response) {
             console.log(response);
             ToastService.show('success', 'Form created successfully.');
         }).catch(function (error) {
@@ -102,7 +101,7 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
     }
 
     $scope.updateForm = function (payload) {
-        ApiService.updateForm($scope.formId, payload, access_token).then(function (response) {
+        ApiService.updateForm($scope.formId, payload).then(function (response) {
             console.log(response);
             ToastService.show('success', 'Form updated successfully.');
         }).catch(function (error) {
@@ -121,7 +120,7 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
     }
 
     $scope.fetchFormData = function () {
-        ApiService.getFormData(access_token, $scope.formId).then(function (response) {
+        ApiService.getFormData($scope.formId).then(function (response) {
             console.log(response);
             $scope.formData = response.data;
             if (!$scope.formData || !$scope.formData.fields.length) {

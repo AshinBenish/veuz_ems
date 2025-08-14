@@ -1,7 +1,6 @@
 app.controller('formListController', ['$scope', 'ApiService', 'ToastService', '$timeout', function ($scope, ApiService, ToastService, $timeout) {
     $scope.fetchForms = function () {
-        var access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU1MTM3NzczLCJpYXQiOjE3NTUwOTQ1NzMsImp0aSI6ImZmNmM0OTQ4ZjZhYjRlNzhiNWQ2M2U1NmJmYzEzODhhIiwidXNlcl9pZCI6IjEifQ.r4LIXF2O9LYRQ_p2ULXGTlUsTzDT3SmBxUDW7PsI_f8";
-        ApiService.fetchForms(access_token).then(function (response) {
+        ApiService.fetchForms().then(function (response) {
             console.log(response);
             $scope.formData = response.data;
         }).catch(function (error) {

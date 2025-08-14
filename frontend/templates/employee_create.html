@@ -5,9 +5,9 @@
 {% block content %}
 {% verbatim %}
 <div class="p-6" ng-app="emsApp" ng-controller="employeeFormListController">
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">Available Forms</h1>
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Add Employee</h1>
     <p class="text-gray-600 mb-6">
-        Select one form below to create employee data.
+        Select one form below to Add employee.
     </p>
     <!-- Grid -->
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -85,7 +85,7 @@
                                     ng-if="['text', 'email', 'phone','number', 'date'].indexOf(field.type_name) !== -1">
                                     <input type="{{field.type_name}}" id="field_preview_{{$index}}"
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                        placeholder="{{field.placeholder}}" required />
+                                        placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}"/>
                                 </div>
                                 <!-- password input field -->
                                 <div ng-if="field.type_name === 'password'">
@@ -94,7 +94,7 @@
                                     placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
                                     focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 
                                     transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                            placeholder="{{field.placeholder}}" required>
+                                            placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}">
 
                                         <!-- Eye icon -->
                                         <button type="button"
@@ -111,13 +111,9 @@
                                 <div ng-if="field.type_name === 'textarea'">
                                     <textarea rows="4" id="field_preview_{{$index}}"
                                         class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                        placeholder="{{field.placeholder}}"></textarea>
+                                        placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}"></textarea>
                                 </div>
                             </div>
-                            <button type="submit" disabled
-                                class="w-full bg-gray-400 text-white font-medium py-2 px-4 rounded-md cursor-not-allowed opacity-70">
-                                Submit Form
-                            </button>
                         </div>
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500 bg-gray-50 mt-24"
                             ng-show="!fields.length">
@@ -128,11 +124,11 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="preview-modal" type="button"
+                    <button type="button" ng-click="createEmployee()"
                         class="text-white bg-gradient-to-r from-green-600 to-emerald-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                         <i class="fa-solid fa-user-plus me-2"></i>Create Employee </button>
 
-                    <a href="/forms/{{selectedForm.id}}/edit/" class="ms-3 "><button data-modal-hide="preview-modal" type="button"
+                    <a href="/forms/{{selectedForm.id}}/edit/" class="ms-3 "><button type="button"
                             class="text-white bg-gradient-to-r from-yellow-300 to-yellow-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             <i class="fa-solid fa-file-pen me-2"></i>Edit Form</button>
                     </a>

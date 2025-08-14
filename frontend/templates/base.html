@@ -16,6 +16,27 @@
 
     {% block top_script %}
     {% endblock top_script %}
+    <script>
+        (function () {
+            function isTokenExpired(token) {
+                try {
+                    var payload = JSON.parse(atob(token.split('.')[1]));
+                    var now = Math.floor(Date.now() / 1000);
+                    return payload.exp && payload.exp < now;
+                } catch (e) {
+                    return true;
+                }
+            }
+
+            var publicPaths = ['/login/', '/register/'];
+            var currentPath = window.location.pathname;
+            var token = localStorage.getItem('accessToken');
+
+            if (!publicPaths.includes(currentPath) && (!token || isTokenExpired(token))) {
+                window.location.href = '/login/';
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -38,8 +59,8 @@
                     <h1 class="text-xl font-bold">EMS</h1>
                 </div>
                 <nav class="flex-1 px-4 py-6 space-y-2">
-                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                        href="/dashboard">
+                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if request.resolver_match.url_name == 'dashboard' %}bg-green-50 text-green-700 border-r-2 border-green-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900 {% endif %}"
+                        href="{% url 'dashboard' %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-layout-dashboard w-5 h-5 mr-3">
@@ -49,8 +70,8 @@
                             <rect width="7" height="5" x="3" y="16" rx="1"></rect>
                         </svg>Dashboard
                     </a>
-                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 bg-green-50 text-green-700 border-r-2 border-green-700"
-                        href="/forms">
+                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if request.resolver_match.url_name == 'form_list' or request.resolver_match.url_name == 'form_designer' or request.resolver_match.url_name == 'form_edit' %}bg-green-50 text-green-700 border-r-2 border-green-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900 {% endif %}"
+                        href="{% url 'form_list' %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-file-text w-5 h-5 mr-3">
@@ -59,10 +80,10 @@
                             <path d="M10 9H8"></path>
                             <path d="M16 13H8"></path>
                             <path d="M16 17H8"></path>
-                        </svg>Form Designer
+                        </svg>Forms
                     </a>
-                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                        href="/employees">
+                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if request.resolver_match.url_name == 'employee_search' or request.resolver_match.url_name == 'employee_form' %}bg-green-50 text-green-700 border-r-2 border-green-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900 {% endif %}"
+                        href="{% url 'employee_search' %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-users w-5 h-5 mr-3">
@@ -72,7 +93,7 @@
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>Employees
                     </a>
-                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    <a class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if request.resolver_match.url_name == 'profile' %}bg-green-50 text-green-700 border-r-2 border-green-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900 {% endif %}"
                         href="/profile">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -83,7 +104,7 @@
                     </a>
                 </nav>
                 <div class="p-4 border-t border-gray-200">
-                    <button
+                    <button onclick="logout()"
                         class="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -105,6 +126,7 @@
             <div id="toast-container" class="fixed top-4 right-4 space-y-2 z-50"></div>
         </div>
     </div>
+    <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     {% block bottom_script_cdn %}
     {% endblock bottom_script_cdn %}

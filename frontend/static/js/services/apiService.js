@@ -6,49 +6,80 @@ app.service('ApiService', ['$http', function ($http) {
         return $http.get(baseUrl + 'field-types/');
     }
 
-    this.createForm = function (data, accessToken) {
+    this.createForm = function (data) {
         return $http({
             method: 'POST',
             url: baseUrl + 'forms/',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken,
-                'Content-Type': 'application/json'
-            },
             data: data
         });
     };
 
-    this.updateForm = function (formId, data, accessToken) {
+    this.updateForm = function (formId, data) {
         return $http({
             method: 'PUT',
             url: baseUrl + 'forms/'+formId+'/',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken,
-                'Content-Type': 'application/json'
-            },
             data: data
         });
     };
 
-    this.fetchForms = function (accessToken) {
+    this.fetchForms = function () {
         return $http({
             method: 'GET',
             url: baseUrl + 'forms/',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
         });
     };
 
-    this.getFormData = function (accessToken,formId) {
+    this.getFormData = function (formId) {
         return $http({
             method: 'GET',
             url: baseUrl + 'forms/'+formId+'/',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
         });
     };
     
+    this.createEmployee = function (data) {
+        return $http({
+            method: 'POST',
+            url: baseUrl + 'employee/create/',
+            data: data
+        });
+    };
+
+    this.fetchDynamicFields = function () {
+        return $http({
+            method: 'GET',
+            url: baseUrl + 'dynamic/fields/',
+        });
+    
+    }
+
+    this.searchEmployee = function (data) {
+        return $http({
+            method: 'POST',
+            url: baseUrl + 'employee/search/',
+            data: data
+        });
+    };
+
+    this.getEmploeeData = function (employeeId) {
+        return $http({
+            method: 'GET',
+            url: baseUrl + 'employee/'+employeeId+'/',
+        });
+    };
+
+    this.updateEmployee = function (employeeId, data) {
+        return $http({
+            method: 'PUT',
+            url: baseUrl + 'employee/'+employeeId+'/',
+            data: data
+        });
+    };
+
+    this.deleteEmployee = function (employeeId) {
+        return $http({
+            method: 'DELETE',
+            url: baseUrl + 'employee/'+employeeId+'/',
+        });
+    };
 
 }]);
