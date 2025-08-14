@@ -31,6 +31,16 @@ app.factory('authService', function ($http, $q) {
                 });
         },
 
+        register: function (username, email, password) {
+            return $http.post(baseUrl + 'auth/register/', { username, email, password })
+                .then(function (response) {
+                    setTokens(response.data.access, response.data.refresh);
+                    localStorage.setItem('username', username);
+                    return response.data;
+                });
+        },
+
+
         logout: function () {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');

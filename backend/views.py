@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer,VeFieldTypeSerializer
 from .models import VeFieldType, VeDynamicForm, VeDynamicFormField, VeEmployee
 from .serializers import (
@@ -27,7 +28,14 @@ class RegisterAPIView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        return Response({"detail": "User registered successfully."}, status=status.HTTP_201_CREATED)
+        # Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "detail": "User registered successfully.",
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        }, status=status.HTTP_201_CREATED)
     
 class UserInfoView(generics.RetrieveAPIView):
     serializer_class = UserInfoSerializer

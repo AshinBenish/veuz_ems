@@ -17,6 +17,8 @@
 
 <body>
     <div class="min-h-screen bg-gray-50" ng-app="emsApp" ng-controller="registerController">
+        <!-- Toast Container -->
+        <div id="toast-container" class="fixed top-4 right-4 space-y-2 z-50"></div>
         <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100 p-4">
             <div
                 class="rounded-lg text-card-foreground w-full max-w-md shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
@@ -36,15 +38,16 @@
                     <p class="text-sm text-gray-600">Fill in your details to create a new account</p>
                 </div>
                 <div class="p-6 pt-0">
-                    <form class="space-y-4">
+                    <form class="space-y-4" ng-submit="register()">
                         <div class="space-y-2">
                             <label
                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                for="name">Full Name
+                                for="name">User Name
                             </label>
                             <input
                                 class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                id="name" placeholder="Enter your full name" required="" type="text" value="">
+                                id="name" placeholder="Enter your full name" required="" type="text" value=""
+                                ng-model="username">
                         </div>
                         <div class="space-y-2">
                             <label
@@ -53,29 +56,29 @@
                             </label>
                             <input
                                 class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                id="email" placeholder="Enter your email" required="" type="email" value="">
+                                id="email" placeholder="Enter your email" required="" type="email" value=""
+                                ng-model="email">
                         </div>
                         <div class="space-y-2">
                             <label
                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 for="password">Password
                             </label>
-                            <div class="relative">
-                                <input
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                    id="password" placeholder="Enter your password" required="" type="password"
-                                    value="">
-                                <button
-                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground rounded-md absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-eye w-4 h-4">
-                                        <path
-                                            d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
-                                        </path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                            <div class="relative w-full">
+                                <input type="password" id="password" ng-model="password" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm ring-offset-background 
+                                    placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+                                    focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 
+                                    transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                                    placeholder="Enter your password" required>
+
+                                <!-- Eye icon -->
+                                <button type="button"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                                    onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'; 
+                     this.innerHTML = this.previousElementSibling.type === 'password' 
+                         ? '<i class=&quot;fas fa-eye&quot;></i>' 
+                         : '<i class=&quot;fas fa-eye-slash&quot;></i>';">
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
@@ -83,22 +86,21 @@
                             <label
                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 for="confirmPassword">Confirm Password</label>
-                            <div class="relative">
-                                <input
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                    id="confirmPassword" placeholder="Confirm your password" required="" type="password"
-                                    value="">
-                                <button
-                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground rounded-md absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-eye w-4 h-4">
-                                        <path
-                                            d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
-                                        </path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                            <div class="relative w-full">
+                                <input type="password" id="confirmPassword" ng-model="confirmPassword" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm ring-offset-background 
+                                    placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+                                    focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 
+                                    transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                                    placeholder="Enter your password" required>
+
+                                <!-- Eye icon -->
+                                <button type="button"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                                    onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'; 
+                     this.innerHTML = this.previousElementSibling.type === 'password' 
+                         ? '<i class=&quot;fas fa-eye&quot;></i>' 
+                         : '<i class=&quot;fas fa-eye-slash&quot;></i>';">
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
