@@ -1,3 +1,5 @@
+from django.db.models.functions import Lower
+from django.db.models import Q
 from rest_framework import generics, status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,9 +8,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .serializers import RegisterSerializer,VeFieldTypeSerializer
 from .models import VeFieldType, VeDynamicForm, VeDynamicFormField, VeEmployee
-from .serializers import VeDynamicFormSerializer, VeEmployeeSubmitSerializer, VeEmployeeSearchSerializer, VeEmployeeSerializer
-from django.db.models.functions import Lower
-from django.db.models import Q
+from .serializers import (
+    VeDynamicFormSerializer, 
+    VeEmployeeSubmitSerializer, 
+    VeEmployeeSearchSerializer, 
+    VeEmployeeSerializer, 
+    UserProfileUpdateSerializer,
+    UserPasswordUpdateSerializer,
+    UserInfoSerializer
+)
 
 # Registration View
 class RegisterAPIView(generics.CreateAPIView):
@@ -20,6 +28,28 @@ class RegisterAPIView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({"detail": "User registered successfully."}, status=status.HTTP_201_CREATED)
+    
+class UserInfoView(generics.RetrieveAPIView):
+    serializer_class = UserInfoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+#Profile Update View
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+class UserPasswordUpdateView(generics.UpdateAPIView):
+    serializer_class = UserPasswordUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 # Custom Token Obtain Pair Serializer
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

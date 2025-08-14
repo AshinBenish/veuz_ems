@@ -10,6 +10,9 @@ class LoginView(TemplateView):
 class RegistrationView(TemplateView):
     template_name = 'register.html'
 
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
 class FormDesignerView(TemplateView):
     template_name = 'form_designer.html'
 

@@ -82,4 +82,29 @@ app.service('ApiService', ['$http', function ($http) {
         });
     };
 
+    this.profileUpdate = function (data) {
+        return $http({
+            method: 'PUT',
+            url: baseUrl + 'auth/profile/update/',
+            data: data
+        });
+    };
+
+    this.passwordUpdate = function (data) {
+        return $http({
+            method: 'PUT',
+            url: baseUrl + 'auth/password/update/',
+            data: data
+        });
+    };
+
+    this.getProfile = function () {
+        return $http({
+            method: 'GET',
+            url: baseUrl + 'auth/profile/',
+        });
+    };
+
+    
+
 }]);

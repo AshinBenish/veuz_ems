@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     RegisterAPIView, 
+    UserProfileUpdateView,
     MyTokenObtainPairView,
     VeFieldTypeListApiView,
     VeDynamicFormCreateListAPIView,
@@ -9,12 +10,17 @@ from .views import (
     EmployeeSubmitAPIView,
     UniqueDynamicFieldsAPIView,
     EmployeeSearchAPIView,
-    EmployeeRetrieveUpdateDestroyView
+    EmployeeRetrieveUpdateDestroyView,
+    UserPasswordUpdateView,
+    UserInfoView
 )
 
 urlpatterns = [
     path('auth/register/', RegisterAPIView.as_view(), name='register'),
     path('auth/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/profile/', UserInfoView.as_view(), name='user-info'),
+    path('auth/profile/update/', UserProfileUpdateView.as_view(), name='user-profile'),
+    path('auth/password/update/', UserPasswordUpdateView.as_view(), name='user-password'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     #Form 
     path('field-types/', VeFieldTypeListApiView.as_view(), name='field_types_list'),
