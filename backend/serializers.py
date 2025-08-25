@@ -74,6 +74,7 @@ class VeDynamicFormFieldSerializer(serializers.ModelSerializer):
     field_type = serializers.PrimaryKeyRelatedField(
         queryset=VeFieldType.objects.all()
     )
+    placeholder = serializers.CharField(required=False, allow_blank=True,allow_null=True)
 
     class Meta:
         model = VeDynamicFormField

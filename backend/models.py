@@ -36,7 +36,7 @@ class VeFieldType(models.Model):
 class VeDynamicFormField(BaseModel):
     form = models.ForeignKey(VeDynamicForm, on_delete=models.CASCADE, related_name='fields')
     label = models.CharField(max_length=255)
-    placeholder = models.CharField(max_length=255)
+    placeholder = models.CharField(max_length=255, blank=True, null=True)
     field_type = models.ForeignKey(VeFieldType, on_delete=models.SET_NULL, null=True)
     required = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
@@ -56,7 +56,7 @@ class VeEmployee(BaseModel):
 class VeEmployeeFieldValue(BaseModel):
     employee = models.ForeignKey(VeEmployee, on_delete=models.CASCADE, related_name="field_values")
     form_field = models.ForeignKey(VeDynamicFormField, on_delete=models.CASCADE)
-    value = models.TextField()
+    value = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 've_employee_field_value'

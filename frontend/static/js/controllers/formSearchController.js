@@ -86,6 +86,16 @@ app.controller('formSearchController', ['$scope', 'ApiService', 'ToastService', 
     }
 
     $scope.updateEmployee = function (employeeId) {
+        if ($scope.employeeForm.$invalid) {
+            // Mark all fields as touched
+            angular.forEach($scope.employeeForm.$error, function (field) {
+                angular.forEach(field, function (errorField) {
+                    errorField.$setTouched();
+                });
+            });
+            ToastService.show('error', 'Please fill all required fields.');
+            return;
+        }
         ApiService.updateEmployee(employeeId, $scope.employeeData).then(function (response) {
             ToastService.show('success', 'Employee updated successfully.');
             editModal.hide();
@@ -104,7 +114,7 @@ app.controller('formSearchController', ['$scope', 'ApiService', 'ToastService', 
     }
 
     $scope.deleteEmploee = function () {
-        ApiService.deleteEmployee($scope.deleteEmployeeId).then(function(response){
+        ApiService.deleteEmployee($scope.deleteEmployeeId).then(function (response) {
             ToastService.show('success', 'Employee deleted successfully.');
             deleteModal.hide();
             $scope.search();

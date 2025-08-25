@@ -48,8 +48,14 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
 
     $scope.addField = function () {
         let missingFields = [];
-        if (!$scope.field_label) missingFields.push('Field label');
-        if (!$scope.field_type) missingFields.push('Field type');
+        if (!$scope.field_label) {
+            missingFields.push('Field label');
+            $scope.formDesigner.field_label.$setTouched();
+        }
+        if (!$scope.field_type) {
+            missingFields.push('Field type');
+            $scope.formDesigner.field_type.$setTouched();
+        }
 
         if (missingFields.length) {
             ToastService.show('error', `${missingFields.join(' and ')} ${missingFields.length > 1 ? 'are' : 'is'} required.`);
@@ -68,11 +74,14 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
         $scope.field_label = null;
         $scope.field_type = null;
         $scope.field_placeholder = null;
+        $scope.formDesigner.field_label.$setUntouched();
+        $scope.formDesigner.field_type.$setUntouched();
         $scope.field_is_required = 'true';
     }
 
     $scope.saveForm = function () {
         if (!$scope.form_name) {
+            $scope.formDesigner.form_name.$setTouched();
             ToastService.show('error', 'Form name is required.');
             return;
         }
@@ -85,6 +94,20 @@ app.controller('formDesignController', ['$scope', 'ApiService', 'ToastService', 
             name: $scope.form_name,
             description: $scope.form_description,
             fields: $scope.fields
+        }
+
+        var isValid = true;
+
+        angular.forEach($scope.fields, function (field, index) {
+            if (!field.label || field.label.trim() === "") {
+                ToastService.show('error', "Field at position " + (index + 1) + " is missing a label.");
+                isValid = false;
+                return;
+            }
+        });
+
+        if (!isValid) {
+            return;
         }
 
         if ($scope.isFormEdit) {

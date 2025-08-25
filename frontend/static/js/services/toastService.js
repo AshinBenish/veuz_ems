@@ -1,7 +1,9 @@
 app.service('ToastService', function () {
     this.show = function (type, message) {
         const container = document.getElementById('toast-container');
-
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
         // Create toast element
         const toast = document.createElement('div');
         toast.className = `

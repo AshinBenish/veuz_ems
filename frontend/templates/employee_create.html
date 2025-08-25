@@ -73,51 +73,77 @@
                 <!-- Modal body -->
                 <div class="px-6 py-4 overflow-y-auto flex-1">
                     <div class="p-6 pt-0">
-                        <div class="space-y-4" ng-show="fields.length" ng-cloak>
-                            <!-- <h2 class="text-xl font-bold text-gray-900 border-b pb-2" ng-cloak>
+                        <form name="employeeForm">
+                            <div class="space-y-4" ng-show="fields.length" ng-cloak>
+                                <!-- <h2 class="text-xl font-bold text-gray-900 border-b pb-2" ng-cloak>
                             </h2> -->
-                            <div class="space-y-2" ng-repeat="field in fields">
-                                <label for="field_preview_{{$index}}"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{field.label}}<span
-                                        class="text-red-500 ml-1" ng-show="field.required">*</span></label>
-                                <!-- Text Based input field  -->
-                                <div
-                                    ng-if="['text', 'email', 'phone','number', 'date'].indexOf(field.type_name) !== -1">
-                                    <input type="{{field.type_name}}" id="field_preview_{{$index}}"
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                        placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}"/>
-                                </div>
-                                <!-- password input field -->
-                                <div ng-if="field.type_name === 'password'">
-                                    <div class="relative w-full">
-                                        <input type="password" id="field_preview_{{$index}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm ring-offset-background 
+                                <div class="space-y-2" ng-repeat="field in fields">
+                                    <label for="field_preview_{{$index}}"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{field.label}}<span
+                                            class="text-red-500 ml-1" ng-show="field.required">*</span></label>
+                                    <!-- Text Based input field  -->
+                                    <div
+                                        ng-if="['text', 'email', 'phone','number', 'date'].indexOf(field.type_name) !== -1">
+                                        <input type="{{field.type_name}}" id="field_preview_{{$index}}" ng-required="field.required"
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                                            placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" name="dynamic_field_{{$index}}"
+                                            ng-class="{'border-red-500': fieldErrors[field.id]}" />
+                                        <div class="text-red-500 text-sm"
+                                            ng-show="employeeForm['dynamic_field_' + $index].$touched && employeeForm['dynamic_field_' + $index].$invalid">
+                                            <span ng-show="employeeForm['dynamic_field_' + $index].$error.required">
+                                                {{field.label}} is required.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- password input field -->
+                                    <div ng-if="field.type_name === 'password'">
+                                        <div class="relative w-full">
+                                            <input type="password" id="field_preview_{{$index}}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm ring-offset-background 
                                     placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
                                     focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 
                                     transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                            placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}">
+                                                placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-required="field.required"
+                                                name="dynamic_field_{{$index}}"
+                                                ng-class="{'border-red-500': fieldErrors[field.id]}">
 
-                                        <!-- Eye icon -->
-                                        <button type="button"
-                                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
-                                            onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'; 
+                                            <!-- Eye icon -->
+                                            <button type="button"
+                                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                                                onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'; 
                      this.innerHTML = this.previousElementSibling.type === 'password' 
                          ? '<i class=&quot;fas fa-eye&quot;></i>' 
                          : '<i class=&quot;fas fa-eye-slash&quot;></i>';">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                        <div class="text-red-500 text-sm"
+                                            ng-show="employeeForm['dynamic_field_' + $index].$touched && employeeForm['dynamic_field_' + $index].$invalid">
+                                            <span ng-show="employeeForm['dynamic_field_' + $index].$error.required">
+                                                {{field.label}} is required.
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                    <!-- Text area -->
+                                    <div ng-if="field.type_name === 'textarea'">
+                                        <textarea rows="4" id="field_preview_{{$index}}"
+                                            class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                                            placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-required="field.required" name="dynamic_field_{{$index}}"
+                                            ng-class="{'border-red-500': fieldErrors[field.id]}"></textarea>
+                                        <div class="text-red-500 text-sm"
+                                            ng-show="employeeForm['dynamic_field_' + $index].$touched && employeeForm['dynamic_field_' + $index].$invalid">
+                                            <span ng-show="employeeForm['dynamic_field_' + $index].$error.required">
+                                                {{field.label}} is required.
+                                            </span>
+
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- Text area -->
-                                <div ng-if="field.type_name === 'textarea'">
-                                    <textarea rows="4" id="field_preview_{{$index}}"
-                                        class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                        placeholder="{{field.placeholder}}" ng-model="formValues[field.id]" ng-class="{'border-red-500': fieldErrors[field.id]}"></textarea>
-                                </div>
                             </div>
-                        </div>
+                        </form>
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500 bg-gray-50 mt-24"
                             ng-show="!fields.length">
-                            <p class="text-lg font-medium">Your form preview will appear here</p>
+                            <p class="text-lg font-medium">No fields are available</p>
                         </div>
 
                     </div>
@@ -146,5 +172,5 @@
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/services/apiService.js' %}"></script>
 <script src="{% static 'js/services/toastService.js' %}"></script>
-<script src="{% static 'js/controllers/employeeFormListController.js' %}"></script>
+<script src="{% static 'js/controllers/employeeFormListController.js' %}?v=0.01"></script>
 {% endblock bottom_script_cdn %}

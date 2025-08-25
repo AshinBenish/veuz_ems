@@ -72,19 +72,29 @@ app.controller('employeeFormListController', ['$scope', 'ApiService', 'ToastServ
         });
 
         if (hasError) {
+            angular.forEach($scope.employeeForm.$error, function (field) {
+                angular.forEach(field, function (errorField) {
+                    errorField.$setTouched();
+                });
+            });
             ToastService.show('error', 'Please fill all required fields.');
             return;
         };
 
-        Object.entries($scope.formValues)
-
         var payload = {
             form_id: $scope.selectedForm.id,
-            fields: Object.entries($scope.formValues).map(([key, value]) => ({
-                field_id: key,
-                value: value
-            }))
+            fields: []
         };
+
+        angular.forEach($scope.selectedForm.fields, function (field) {
+            payload.fields.push({
+                field_id: field.id,
+                value: $scope.formValues[field.id] || ""  // empty string if no value
+            });
+        });
+
+
+        console.log(payload);
 
         ApiService.createEmployee(payload).then(function (response) {
             ToastService.show('success', 'Employee created successfully.');

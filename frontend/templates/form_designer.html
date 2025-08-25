@@ -30,163 +30,231 @@
                     </button>
                 </h3>
             </div>
-            <div class="p-6 pt-0 space-y-6">
-                <div class="space-y-2">
-                    <label
-                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        for="formName">
-                        Form Name
-                    </label>
-                    <input ng-model="form_name"
-                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                        id="formName" placeholder="Enter form name">
-                </div>
-                <div class="space-y-2">
-                    <label
-                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        for="formDescription">
-                        Form Description
-                    </label>
-                    <textarea rows="4" id="formDescription"
-                        class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                        placeholder="Enter form description" ng-model="form_description">
-                            </textarea>
-                </div>
-                <div class="border rounded-lg p-4 bg-gray-50">
-                    <h3 class="font-medium text-gray-900 mb-4">Add New Field</h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label
-                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                for="fieldLabel">
-                                Label
-                            </label>
-                            <input
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
-                                id="fieldLabel" placeholder="Field label" value="" ng-model="field_label">
-                        </div>
-                        <div>
-                            <label
-                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                for="fieldType">
-                                Type
-                            </label>
-                            <div class="relative mt-1">
-                                <select ng-model="field_type" id="fieldType" ng-options="option.id as option.display_name for option in fieldTypes"
-                                    class="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 pr-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500">
-                                    <option value="">Select field type</option>
-                                </select>
-
-                                <!-- Custom Arrow -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 opacity-50">
-                                    <path d="m4 6 4 4 4-4" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="">
-                            <label
-                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                for="fieldplaceholder">
-                                Placeholder
-                            </label>
-                            <input ng-model="field_placeholder"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
-                                id="fieldplaceholder" placeholder="Field Placeholder" value="">
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium leading-none">
-                                Required
-                            </label>
-                            <div class="flex items-center gap-4 mt-2">
-                                <label class="flex items-center gap-1">
-                                    <input type="radio" ng-model="field_is_required" value="true"
-                                        class="text-green-500 focus:ring-green-500">
-                                    <span>Yes</span>
-                                </label>
-                                <label class="flex items-center gap-1">
-                                    <input type="radio" ng-model="field_is_required" value="false"
-                                        class="text-green-500 focus:ring-green-500">
-                                    <span>No</span>
-                                </label>
-                            </div>
+            <form name="formDesigner" novalidate>
+                <div class="p-6 pt-0 space-y-6">
+                    <div class="space-y-2">
+                        <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            for="formName">
+                            Form Name <span class="text-red-500 ml-1">*</span></label>
+                        </label>
+                        <input ng-model="form_name" name="form_name" ng-required="true" ng-maxlength="255"
+                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                            id="formName" placeholder="Enter form name" required>
+                        <div class="mt-1 text-sm text-red-500" ng-cloak
+                            ng-show="formDesigner.form_name.$touched && formDesigner.form_name.$invalid">
+                            <span ng-show="formDesigner.form_name.$error.required">Form name is required.</span>
+                            <span ng-show="formDesigner.form_name.$error.maxlength">Form name must be at most 255
+                                characters.</span>
                         </div>
                     </div>
-                    <button ng-click="addField()"
-                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 w-full bg-green-600 hover:bg-green-700"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-plus w-4 h-4 mr-2">
-                            <path d="M5 12h14"></path>
-                            <path d="M12 5v14"></path>
-                        </svg>
-                        Add Field
-                    </button>
-                </div>
-                <div class="space-y-3" ng-show="fields.length > 0" ng-cloak>
-                    <h3 class="font-medium text-gray-900">Form Fields ({{fields.length}})</h3>
-                    <div id="field-list">
-                        <div ng-repeat="field in fields"
-                            class="flex items-center space-x-3 p-3 bg-white border rounded-lg cursor-move mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-grip-vertical w-5 h-5 text-gray-400">
-                                <circle cx="9" cy="12" r="1"></circle>
-                                <circle cx="9" cy="5" r="1"></circle>
-                                <circle cx="9" cy="19" r="1"></circle>
-                                <circle cx="15" cy="12" r="1"></circle>
-                                <circle cx="15" cy="5" r="1"></circle>
-                                <circle cx="15" cy="19" r="1"></circle>
-                            </svg>
-                            <div class="flex-1">
-                                <div class="grid grid-cols-2 gap-2 space-x-2 mb-2">
-                                    <input ng-model="field.label"
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
-                                        placeholder="Field label">
-                                    <div class="relative">
-                                        <select ng-model="field.field_type" ng-change="updateFieldTypeName(field)" ng-options="option.id as option.display_name for option in fieldTypes"
-                                            class="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 pr-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500">
-                                            <option value="">Select field type</option>
-                                        </select>
-
-                                        <!-- Custom Arrow -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 opacity-50">
-                                            <path d="m4 6 4 4 4-4" />
-                                        </svg>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <input ng-model="field.placeholder"
-                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
-                                            placeholder="Field Placeholder">
-                                    </div>
-                                </div>
-                                <label>
-                                    <input type="checkbox" ng-model="field.required"> Required
+                    <div class="space-y-2">
+                        <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            for="formDescription">
+                            Form Description
+                        </label>
+                        <textarea rows="4" id="formDescription"
+                            class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                            placeholder="Enter form description" ng-model="form_description">
+                            </textarea>
+                    </div>
+                    <div class="border rounded-lg p-4 bg-gray-50">
+                        <h3 class="font-medium text-gray-900 mb-4">Add New Field</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="fieldLabel">
+                                    Label <span class="text-red-500 ml-1">*</span></label>
                                 </label>
+                                <input
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
+                                    id="fieldLabel" placeholder="Field label" value="" ng-model="field_label"
+                                    name="field_label" ng-required="true" ng-maxlength="50">
+                                <div class="mt-1 text-sm text-red-500" ng-cloak
+                                    ng-show="formDesigner.field_label.$touched && formDesigner.field_label.$invalid">
+                                    <span ng-show="formDesigner.field_label.$error.required">Field label is
+                                        required.</span>
+                                    <span ng-show="formDesigner.field_label.$error.maxlength">Field label must be at
+                                        most
+                                        50
+                                        characters.</span>
+                                </div>
                             </div>
-                            <button ng-click="removeField($index)"
-                                class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background h-9 rounded-md px-3 text-red-600 hover:text-red-700 hover:bg-red-50">
+                            <div>
+                                <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="fieldType">
+                                    Type <span class="text-red-500 ml-1">*</span></label>
+                                </label>
+                                <div class="relative mt-1">
+                                    <select ng-model="field_type" id="fieldType"
+                                        ng-options="option.id as option.display_name for option in fieldTypes"
+                                        name="field_type" ng-required="true"
+                                        class="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 pr-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500">
+                                        <option value="">Select field type</option>
+                                    </select>
+
+                                    <!-- Custom Arrow -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 opacity-50">
+                                        <path d="m4 6 4 4 4-4" />
+                                    </svg>
+                                </div>
+                                <div class="mt-1 text-sm text-red-500" ng-cloak
+                                    ng-show="formDesigner.field_type.$touched && formDesigner.field_type.$invalid">
+                                    <span ng-show="formDesigner.field_type.$error.required">Field type is
+                                        required.</span>
+                                </div>
+                            </div>
+                            <div class="">
+                                <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="fieldplaceholder">
+                                    Placeholder
+                                </label>
+                                <input ng-model="field_placeholder" name="field_placeholder" ng-maxlength="50"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
+                                    id="fieldplaceholder" placeholder="Field Placeholder" value="">
+                                <div class="mt-1 text-sm text-red-500" ng-cloak
+                                    ng-show="formDesigner.field_placeholder.$touched && formDesigner.field_placeholder.$invalid">
+                                    <span ng-show="formDesigner.field_placeholder.$error.maxlength">Field label must be
+                                        at
+                                        most
+                                        50
+                                        characters.</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium leading-none">
+                                    Required
+                                </label>
+                                <div class="flex items-center gap-4 mt-2">
+                                    <label class="flex items-center gap-1">
+                                        <input type="radio" ng-model="field_is_required" value="true"
+                                            class="text-green-500 focus:ring-green-500">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="flex items-center gap-1">
+                                        <input type="radio" ng-model="field_is_required" value="false"
+                                            class="text-green-500 focus:ring-green-500">
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button ng-click="addField()"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 w-full bg-green-600 hover:bg-green-700"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-plus w-4 h-4 mr-2">
+                                <path d="M5 12h14"></path>
+                                <path d="M12 5v14"></path>
+                            </svg>
+                            Add Field
+                        </button>
+                    </div>
+                    <div class="space-y-3" ng-show="fields.length > 0" ng-cloak>
+                        <h3 class="font-medium text-gray-900">Form Fields ({{fields.length}})</h3>
+                        <div id="field-list">
+                            <div ng-repeat="field in fields"
+                                class="flex items-center space-x-3 p-3 bg-white border rounded-lg cursor-move mb-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-trash2 w-4 h-4">
-                                    <path d="M3 6h18"></path>
-                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                    <line x1="10" x2="10" y1="11" y2="17"></line>
-                                    <line x1="14" x2="14" y1="11" y2="17"></line>
+                                    stroke-linejoin="round" class="lucide lucide-grip-vertical w-5 h-5 text-gray-400">
+                                    <circle cx="9" cy="12" r="1"></circle>
+                                    <circle cx="9" cy="5" r="1"></circle>
+                                    <circle cx="9" cy="19" r="1"></circle>
+                                    <circle cx="15" cy="12" r="1"></circle>
+                                    <circle cx="15" cy="5" r="1"></circle>
+                                    <circle cx="15" cy="19" r="1"></circle>
                                 </svg>
-                            </button>
+                                <div class="flex-1">
+                                    <div class="grid grid-cols-2 gap-2 space-x-2 mb-2">
+                                        <div>
+                                            <input ng-model="field.label" ng-maxlength="50"
+                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                                                placeholder="Field label" ng-required="true"
+                                                name="field_label{{$index}}">
+                                            <div class="text-red-500 text-sm"
+                                                ng-show="formDesigner['field_label' + $index].$touched && formDesigner['field_label' + $index].$invalid">
+                                                <span ng-show="formDesigner['field_label' + $index].$error.required">
+                                                    Field label is required.
+                                                </span>
+                                                <span
+                                                    ng-show="formDesigner['field_label' + $index].$error.maxlength">Field
+                                                    label
+                                                    must be at most
+                                                    50
+                                                    characters.</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="relative">
+                                                <select ng-model="field.field_type" name="field_type{{$index}}"
+                                                    ng-required="true" ng-change="updateFieldTypeName(field)"
+                                                    ng-options="option.id as option.display_name for option in fieldTypes"
+                                                    class="flex h-10 w-full appearance-none rounded-md border border-input bg-background px-3 pr-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500">
+                                                    <!-- <option value="">Select field type</option> -->
+                                                </select>
+
+                                                <!-- Custom Arrow -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                    class="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 opacity-50">
+                                                    <path d="m4 6 4 4 4-4" />
+                                                </svg>
+                                            </div>
+                                            <div class="text-red-500 text-sm"
+                                                ng-show="formDesigner['field_type' + $index].$touched && formDesigner['field_type' + $index].$invalid">
+                                                <span ng-show="formDesigner['field_type' + $index].$error.required">
+                                                    Field type is required.
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <input ng-model="field.placeholder" name="field_placeholder{{$index}}"
+                                                ng-maxlength="50"
+                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 focus:ring-2 focus:ring-green-500 mt-1"
+                                                placeholder="Field Placeholder">
+                                            <div class="mt-1 text-sm text-red-500" ng-cloak
+                                                ng-show="formDesigner['field_placeholder' + $index].$touched && formDesigner['field_placeholder' + $index].$invalid">
+                                                <span ng-show="formDesigner['field_placeholder' + $index].$error.maxlength">Field
+                                                    label must be at
+                                                    most
+                                                    50
+                                                    characters.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label>
+                                        <input type="checkbox" ng-model="field.required"> Required
+                                    </label>
+                                </div>
+                                <button ng-click="removeField($index)"
+                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background h-9 rounded-md px-3 text-red-600 hover:text-red-700 hover:bg-red-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-trash2 w-4 h-4">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+                        <!-- Debug JSON -->
+                        <!-- <pre class="mt-4 bg-gray-100 p-3 rounded">{{ fields | json }}</pre> -->
                     </div>
-                    <!-- Debug JSON -->
-                    <!-- <pre class="mt-4 bg-gray-100 p-3 rounded">{{ fields | json }}</pre> -->
                 </div>
-            </div>
+            </form>
         </div>
         <div class="rounded-lg text-card-foreground border-0 shadow-sm bg-white">
             <div class="flex flex-col space-y-1.5 p-6">
@@ -251,18 +319,18 @@
 {% endblock content %}
 {% block bottom_script_cdn %}
 {% if form_id %}
-    <script>
-        var formId = parseInt("{{form_id}}");
-        var isFormEdit = true;
-    </script>
+<script>
+    var formId = parseInt("{{form_id}}");
+    var isFormEdit = true;
+</script>
 {% else %}
-    <script>
-        var formId = null;
-        var isFormEdit = false;
-    </script>
+<script>
+    var formId = null;
+    var isFormEdit = false;
+</script>
 {% endif %}
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/services/apiService.js' %}"></script>
 <script src="{% static 'js/services/toastService.js' %}"></script>
-<script src="{% static 'js/controllers/formDesignController.js' %}"></script>
+<script src="{% static 'js/controllers/formDesignController.js' %}?v=0.01"></script>
 {% endblock bottom_script_cdn %}
